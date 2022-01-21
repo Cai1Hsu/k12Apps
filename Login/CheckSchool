@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>数字校园</title>
+    <link rel="shortcut icon" href="https://static.k12top.com/Common/yunmalogo_new.png" />
+
+    <link href="/Plugin/layui/css/layui.css" rel="stylesheet" />
+    <link href="/Css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="/Css/globalstyle.css" rel="stylesheet" />
+    <link href="/Css/style.css" rel="stylesheet" />
+    <link href="/Css/schoolwall.css" rel="stylesheet" />
+    <link href="/Css/toggle.css" rel="stylesheet" />
+
+
+    <link href="/Plugin/jquery.autocompleter/jquery.autocomplete.css" rel="stylesheet" />
+    <style>
+        .nav-text {
+            margin-left: 10px;
+        }
+
+        .layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+            background-color: #15A0ED !important
+        }
+
+        .layui-nav-tree .layui-nav-item a {
+            line-height: 35px;
+        }
+
+        .layui-nav-tree .layui-nav-child a {
+            line-height: 40px;
+        }
+
+        .layui-layout-admin .layui-side.pull-top, .layui-layout-admin .layui-body.pull-top, .toggleMenu.pull-top {
+            top: 0px !important;
+        }
+
+        .up-head {
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            -moz-box-shadow: 0 2px 5px -1px #ddd;
+            box-shadow: 0 2px 5px -1px #ddd;
+        }
+
+            .up-head .up-head-left {
+                margin-left: 30px;
+            }
+
+                .up-head .up-head-left li {
+                    list-style: none;
+                    float: left;
+                }
+
+            .up-head > ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .up-head ul > li.top {
+                height: 60px;
+                line-height: 60px;
+            }
+
+            .up-head .logo-img {
+                height: 45px;
+                width: 158px;
+                margin-top: -7px;
+                cursor: pointer;
+            }
+
+
+        .up-head-right > li {
+            font-size: 12px;
+            float: right;
+            list-style: none;
+            margin-right: 30px;
+            cursor: pointer;
+        }
+
+        .right-out {
+            position: absolute;
+            top: 60px;
+            right: 8px;
+            background: #ffffff;
+            -moz-box-shadow: -2px 0px 5px 0px #ddd;
+            box-shadow: -2px 0px 5px 0px #ddd;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            width: 80px;
+        }
+
+            .right-out div {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                display: none;
+            }
+
+                .right-out div:hover {
+                    background: #4bb2ff;
+                    cursor: pointer;
+                    color: #fff;
+                }
+
+
+        .right-out-icon:hover .right-out div {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            display: block;
+        }
+
+        #rolesPanel {
+            display: none;
+            position: absolute;
+            top: 0px;
+            right: 80px;
+            background-color: rgb(255, 255, 255);
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 4px;
+            border-radius: 2px;
+            width: 100%;
+            border: 1px solid #d2d2d2 !important;
+        }
+
+            #rolesPanel .roleItem_li {
+                display: block;
+                text-align: center;
+                width: 100%;
+            }
+
+                #rolesPanel .roleItem_li a {
+                    display: block;
+                    text-align: center;
+                    width: 100%;
+                }
+
+        #roleInfoPanel:hover > a {
+            color: #fff
+        }
+
+        #roleInfoPanel:hover #rolesPanel {
+            display: block
+        }
+
+        #logo_Res {
+            color: #c13643;
+        }
+
+        .up-head-img {
+            height: 30px;
+            width: 30px;
+            margin-top: -1px;
+        }
+
+        .layui-layout-admin .layui-logo {
+            color: #14a0ec !important;
+            line-height: 60px !important;
+            font-weight: 800 !important;
+            left: 10px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body" style="background:#f2f2f2;">
+    <div class="layui-layout layui-layout-admin">
+
+        <div class="layui-header up-head">
+            <ul class="up-head-left">
+                <li class="top">
+                    <a id="logo_Res" style="cursor: pointer">
+                        <div class="layui-logo" style="background:url('https://static.k12top.com/Common/yunmalogo_new.png') no-repeat 8px center / 42px 45px">
+                            <label style="cursor:pointer;color:#14a0ec">数字校园</label>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="up-head-right">
+                <li class="right-out-icon top">
+                    云码棠湖
+                    <div class="right-out">
+                        
+                        <div id="roleInfoPanel" style="position:relative">
+                            <a id="currentRole" href="javascript:;" data-rId="" name="navItem"></a>
+                            <ul id="rolesPanel"></ul>
+                        </div>
+                        <div id="loginOut">退出</div>
+                    </div>
+                </li>
+                <li class="top" style="margin-right: 10px">
+                    <img class="up-head-img" src="https://static.k12top.com/Common/defaultspecialist.png">
+                </li>
+            </ul>
+        </div>
+
+
+
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <div id="flowName" style="height:42px;width:200px;color:#ffffff;background-color:#15A0ED;display:none;font-size:12px;text-align:center;line-height:16px;padding-top:12px;">
+                    <div class="grade"></div>
+                    <div class="semester"></div>
+                </div>
+                <ul class="layui-nav layui-nav-tree" lay-filter="test" style="text-align:left !important">
+
+                    <li class="layui-nav-item">
+                                <a style="line-height:35px" href="/OrganiseUnit/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">机构维护</span></a>
+                                <a style="line-height:35px" href="/Modular/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">模块维护</span></a>
+                                <a style="line-height:35px" href="/BasicData/School/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">学校维护</span></a>
+                                <a style="line-height:35px" href="/Login/CheckSchool" class="layui-this"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">切换学校</span></a>
+                                <a style="line-height:35px" href="/App/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">应用维护</span></a>
+                                <a style="line-height:35px" href="/UnifiedPlatFormRole/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">角色维护</span></a>
+                                <a style="line-height:35px" href="/SuperUserSettings/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">用户维护</span></a>
+                                <a style="line-height:35px" href="/Dictionary/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">字典维护</span></a>
+                                <a style="line-height:35px" href="/Platform/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">APP版本维护</span></a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="toggleMenu adjust-schoolwall">
+            <span class="close">
+                <i class="layui-icon layui-icon-left"></i>
+            </span>
+            <span class="open" style="display:none">
+                <i class="layui-icon layui-icon-right"></i>
+            </span>
+        </div>
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div class="schoolList" id="div_SchoolList">
+
+            </div>
+        </div>
+
+    </div>
+    <script src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="/Plugin/layui/layui.js"></script>
+    <script src="/Scripts/layui.common-1.0.0.js"></script>
+    <script src="/Plugin/jquery.autocompleter/jquery.autocompleter.js"></script>
+    <script src="/Scripts/jquery.cookie.js"></script>
+    <script src="/Scripts/schoolwall.js"></script>
+    <script src="/Scripts/toggle.js"></script>
+    <script>
+
+        var rootPath = '/';
+
+        function post(URL, AppId, WebApi, WebApiLogin, RevertAppId) {
+            //returnMain(URL, AppId, WebApiLogin, RevertAppId);
+            $.ajax({
+                headers: {
+                    "appid": AppId,
+                    "access_token": JSON.parse($.cookie('token')).access_token,
+                    "refresh_token": JSON.parse($.cookie('token')).refresh_token,
+                    "targetId": RevertAppId
+                },
+                type: "post",
+                async: false,
+                url: WebApi + "/account/SwitchApp",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.HasError) {
+                        $.ajax({
+                            headers: { "refresh_token": refresh_token, "AppId": appId },
+                            type: "post",
+                            url: WebApi + "/account/RefreshAccessToken",
+                            data: null,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.HasError) {
+                                    alert(data.Message);
+                                    window.location.href = WebApiLogin;
+                                } else {
+                                    var token = { access_token: data.Data.access_token, refresh_token: data.Data.refresh_token }
+                                    $.cookie('token', JSON.stringify(token));
+                                }
+                            }
+                        });
+                    } else {
+                        res_access_token = data.Data.access_token;
+                        res_refresh_token = data.Data.refresh_token;
+
+                        var temp = document.createElement("form");
+                        temp.action = URL;
+                        temp.method = "post";
+                        temp.style.display = "none";
+                        var access_token = document.createElement("textarea");
+                        var refresh_token = document.createElement("textarea");
+                        var appList = document.createElement("textarea");
+                        var user = document.createElement("textarea");
+                        access_token.name = "access_token";
+                        access_token.value = res_access_token;
+                        refresh_token.name = "refresh_token";
+                        refresh_token.value = res_refresh_token;
+                        appList.name = "appList";
+                        appList.value = "";
+                        user.name = "user";
+                        user.value = "";
+
+                        temp.appendChild(access_token);
+                        temp.appendChild(refresh_token);
+                        temp.appendChild(appList);
+                        temp.appendChild(user);
+                        document.body.appendChild(temp);
+                        temp.submit(); return temp;
+                    }
+                }
+            })
+        }
+        //加载用户角色列表
+        loadCurrentUserRoles();
+        function loadCurrentUserRoles() {
+            $.getJSON('/Login/LoadUserRoles', {}, function (roles) {
+                $('#currentRole').html();
+                $('#rolesPanel').empty();
+                $('#currentRole').attr('data-rId', '');
+                var _rolestext = ``;
+                $(roles).each(function (index, role) {
+                    if (role.IsSelected) {
+                        if (roles.length > 1) {
+                            $('#currentRole').html(`切换角色`);
+                            $('#currentRole').attr('data-rId', role.RoleId);
+                            _rolestext += `<li name="liNav" class="roleItem_li"><a class="bg_this" name="roleItem" style="cursor: pointer;color: #15A0ED !important;" data-rId=${role.RoleId} href="#">${role.RoleName}</a></li>`;
+                        } else {
+                            //$('#currentRole').html(role.RoleName);
+                            //$('#currentRole').attr('data-rId', role.RoleId);
+                            $('#roleInfoPanel').remove();
+                        }
+                    } else {
+                        if (roles.length > 1)
+                            _rolestext += `<li name="liNav"  class="roleItem_li"><a  name="roleItem" style="cursor: pointer" data-rId=${role.RoleId} href="#">${role.RoleName}</a></li>`;
+
+                    }
+                })
+                if (_rolestext != '')
+                    $('#rolesPanel').append(_rolestext)
+                else
+                    $('#rolesPanel').remove();
+            })
+        }
+        //角色切换
+        $('#rolesPanel').on('click', 'a[name="roleItem"]', function (e) {
+            var self = this;
+            var _currentRId = $('#currentRole').attr('data-rId');
+            var _nRId = $(self).attr('data-rId');
+            //if (_nRId== _currentRId)
+            //    return
+            $.post('/Login/RoleChange', { oldRoleId: _currentRId, nRoleId: _nRId }, function (response) {
+                if (response.HasError) {
+                    layer.msg(response.Message, { icon: 2 });
+                } else {
+                    //loadCurrentUserRoles();
+                    //window.location.reload();//需要attrbute->无权限->首页||无权限提示页
+                    window.location.href = "/Home/Index";
+                }
+            })
+        })
+        $('#currentRole').hover(function (e) {
+            var _width = parseFloat($(this).width());
+            $('#rolesPanel').css({ "right": `${_width + 23}px` })
+        })
+
+        $(function () {
+
+            //返回门户
+            $('#logo_Res').click(function () {
+                window.location.href = '/Login/BackToPortal';
+            })
+            $('#backToPortal').click(function () {
+                window.location.href = '/Login/BackToPortal';
+            })
+            $("#loginOut").click(function () {
+                window.location.href ='/Login/LoginOut';
+            });
+            $("#CheckSchool").click(function () {
+                window.location.href = "/Login/CheckSchool";
+            });
+            $('#roleInfoPanel').on('click', 'a[name="navItem"]', function (e) {
+                $(this).parent().removeClass('layui-this')
+            })
+            $('#roleInfoPanel').on('click', 'li[name="liNav"]', function (e) {
+                $(this).removeClass('layui-this')
+            })
+            $('#roleInfoPanel').on('mouseenter ', 'li[name="liNav"]', function (e) {
+                $(this).addClass('bg_this')//.css("background-color", "#F0F0F0")//background:#F0F0F0
+            })
+            $('#roleInfoPanel').on('mouseleave ', 'li[name="liNav"]', function (e) {
+                $(this).removeClass('bg_this')
+            })
+            var urlmap = [
+                {
+                    src: "/ExamPlan/Exam/Othre",
+                    dest: "/ExamPlan/Exam/Index"
+                },
+                {
+                    src: "/ExamPlan/Exam/ExamSetting",
+                    dest: "/ExamPlan/Exam/Index"
+                }
+            ];
+            var path = window.location.pathname;
+
+            $(urlmap).each(function () {
+                var src = this.src;
+                var dest = this.dest;
+                if (src == path) {
+                    path = dest;
+                }
+            });
+
+            var activeNav = null;
+            if (path == "/") {
+                activeNav = $(".layui-nav [default-page]");
+            } else {
+                var navList = $(".layui-nav a[href]");
+                $(navList).each(function () {
+                    var currNav = this;
+                    var url = $(currNav).attr("href");
+                    if (url.indexOf(path) >= 0) {
+                        activeNav = $(currNav);
+                    }
+                });
+            }
+            if (activeNav != null && activeNav != undefined) {
+                activeNav.addClass("layui-this");
+                var pNode = activeNav.parents(".layui-nav-item");
+                if (pNode != null && pNode != undefined) {
+                    pNode.addClass("layui-nav-itemed");
+                }
+                //var navName = activeNav.html();
+                //$("#body-nav-name").html(navName);
+            }
+
+            //JavaScript代码区域
+            layui.use(['element','form','layer'], function () {
+                var element = layui.element;
+                var layer = layui.layer;
+                //鼠标悬浮显示帮助说明
+                $('.icon_tip').mouseover(function () {
+                    var content = $(this).find('.tip_content').text()
+                    var index = layer.tips(content, '.icon_tip', {
+                        time:0
+                    });
+                    $(this).mouseout(function () {
+                        layer.close(index)
+                    })
+                })
+            });
+              $("#updatePassWord").click(function () {
+                 layer.open({
+                    type: 2,
+                    title: "修改密码",
+                    content: "/BasicData/User/Update",
+                    area: ['455px', '255px'],
+                    end: function () {
+                    }
+                });
+            });
+
+        });
+
+        function CheckSchool(id) {
+            $.ajax({
+                url: '/Login/CheckOtherSchool',
+                data: { SchoolId: id },
+                dataType: 'Json',
+                success: function (res) {
+                    if (!res.HasError) {
+                        window.location.href = "/Home/Index";
+                    } else {
+                        window.location.href = "/Login/Index";
+                    }
+
+                }
+            });
+        }
+
+
+
+    </script>
+</body>
+</html>

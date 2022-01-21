@@ -1,0 +1,81 @@
+﻿.schoolList {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 0px;
+}
+
+.school-item {
+    height: 110px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 2px;
+    border: 1px solid #f0f0f0;
+    cursor: pointer;
+    display: flex;
+    text-align: center;
+    max-width: 300px;
+    flex-grow: 1;
+    flex-basis: 180px;
+}
+
+    .school-item:hover {
+        /*-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, .25);*/
+    }
+
+    .school-item.checked {
+        border: 1px solid #4bb2ff!important;
+    }
+
+    .school-item .left {
+        display: flex;
+        flex-direction: column;
+        flex: 5;
+    }
+
+        .school-item .left .name {
+            font-size: 10px;
+            flex:5;
+            color:#333;
+        }
+
+        .school-item .left .logo {
+            padding: 5px;
+            flex: 5;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+            .school-item .left .logo img {
+                width: 58%;
+                max-width: 60px;
+            }
+
+    .school-item .right {
+        padding-top:11px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        /*align-items: center;*/
+        flex: 6;
+        margin-left: 5px;
+    }
+
+        .school-item .right .school-desc {
+            text-align: left;
+            font-size: 12px;
+            color: #666;
+            max-height: 100px;
+            overflow: hidden;
+        }
+
+/*@media (max-width: 1366px) {
+    .school-item {
+        min-width: 25%;
+    }
+}*/
+

@@ -1,0 +1,832 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>数字校园</title>
+    <link rel="shortcut icon" href="https://static.k12top.com/Common/yunmalogo_new.png" />
+
+    <link href="/Plugin/layui/css/layui.css" rel="stylesheet" />
+    <link href="/Css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="/Css/globalstyle.css" rel="stylesheet" />
+    <link href="/Css/style.css" rel="stylesheet" />
+    <link href="/Css/toggle.css" rel="stylesheet" />
+
+
+    <link href="/Plugin/jquery.autocompleter/jquery.autocomplete.css" rel="stylesheet" />
+    <style>
+        .nav-text {
+            margin-left: 10px;
+        }
+
+        .layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+            background-color: #15A0ED !important
+        }
+
+        .layui-nav-tree .layui-nav-item a {
+            line-height: 35px;
+        }
+
+        .layui-nav-tree .layui-nav-child a {
+            line-height: 40px;
+        }
+
+        .schoolList {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap
+        }
+
+        .school-item {
+            width: 220px;
+            height: 110px;
+            margin: 10px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 2px;
+            border: 2px solid #fff;
+            cursor: pointer
+        }
+
+        .selected {
+            border: 2px solid #4bb2ff;
+        }
+
+        .school-item .top {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .schoolImg {
+            height: 30px;
+            width: 30px;
+            min-width: 30px;
+            margin-right: 10px;
+            border-radius: 15px;
+            overflow: hidden
+        }
+
+            .schoolImg img {
+                height: 100%;
+                width: 100%;
+            }
+
+        .schoolName {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .schoolDesc {
+            font-size: 12px;
+            max-height: 70px;
+            font-weight: 300;
+            overflow: hidden;
+            word-break: break-all;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        .a-style {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .activeLi {
+            border: 1px solid #3399cc;
+            padding: 5px;
+            background-color: #3399ff;
+            color: #fff;
+        }
+
+        .up-head {
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            -moz-box-shadow: 0 2px 5px -1px #ddd;
+            box-shadow: 0 2px 5px -1px #ddd;
+        }
+
+            .up-head .up-head-left {
+                margin-left: 30px;
+            }
+
+                .up-head .up-head-left li {
+                    list-style: none;
+                    float: left;
+                }
+
+            .up-head ul {
+                margin: 0;
+                padding: 0;
+            }
+
+                .up-head ul li {
+                    height: 60px;
+                    line-height: 60px;
+                }
+
+            .up-head .logo-img {
+                height: 45px;
+                width: 158px;
+                margin-top: -7px;
+                cursor: pointer;
+            }
+
+        .up-head-right li {
+            font-size: 12px;
+            float: right;
+            list-style: none;
+            margin-right: 30px;
+            cursor: pointer;
+        }
+
+        .right-out {
+            position: absolute;
+            top: 62px;
+            right: 8px;
+            background: #ffffff;
+            -moz-box-shadow: -2px 0px 5px 0px #ddd;
+            box-shadow: -2px 0px 5px 0px #ddd;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            width: 80px;
+        }
+
+            .right-out div {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                display: none;
+            }
+
+                .right-out div:hover {
+                    background: #4bb2ff;
+                    cursor: pointer;
+                    color: #fff;
+                }
+
+        .right-out-icon:hover .right-out div {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            display: block;
+        }
+
+        #logo_Res {
+            color: #c13643;
+        }
+
+        .up-head-img {
+            height: 30px;
+            width: 30px;
+            margin-top: -1px;
+        }
+
+        .layui-layout-admin .layui-logo {
+            color: #14a0ec !important;
+            line-height: 60px !important;
+            font-weight: 800 !important;
+            left: 10px;
+        }
+        .app_pc {
+            background-color: #4bb2ff;
+            color: #ffffff;
+            margin-left: 5px;
+            padding: 3px 5px;
+            border-radius: 90%;
+        }
+        .app_mobile {
+             background-color: orange;
+             color: #ffffff;
+             margin-left: 5px;
+             padding: 3px 5px;
+             border-radius: 90%;
+         }
+        .appgroup_pc {
+            background-color: #4bb2ff;
+            color: #ffffff;
+            margin-left: 5px;
+            padding: 3px 5px;
+        }
+
+        .appgroup_mobile {
+            background-color: orange;
+            color: #ffffff;
+            margin-left: 5px;
+            padding: 3px 5px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body" style="background:#f2f2f2;">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header up-head">
+            <ul class="up-head-left">
+                <li>
+                    <a id="logo_Res" style="cursor: pointer">
+                        <div class="layui-logo" style="background:url('https://static.k12top.com/Common/yunmalogo_new.png') no-repeat 8px center / 42px 45px">
+                            <label style="cursor:pointer;color:#14a0ec">数字校园</label>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="up-head-right">
+                <li class="right-out-icon">
+                    云码棠湖
+                    <div class="right-out">
+                        <div id="updatePassWord">修改密码</div>
+                        <div id="backToPortal">返回门户</div>
+                        <div id="loginOut">退出</div>
+                    </div>
+                </li>
+                <li style="margin-right: 10px">
+                    <img class="up-head-img" src="https://static.k12top.com/Common/defaultspecialist.png">
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <div id="flowName" style="height:42px;width:200px;color:#ffffff;background-color:#15A0ED;display:none;font-size:12px;text-align:center;line-height:16px;padding-top:12px;">
+                    <div class="grade"></div>
+                    <div class="semester"></div>
+                </div>
+                <ul class="layui-nav layui-nav-tree" lay-filter="test" style="text-align:left !important">
+                    <li class="layui-nav-item">
+                                <a style="line-height:35px" href="/OrganiseUnit/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">机构维护</span></a>
+                                <a style="line-height:35px" href="/Modular/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">模块维护</span></a>
+                                <a style="line-height:35px" href="/BasicData/School/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">学校维护</span></a>
+                                <a style="line-height:35px" href="/Login/CheckSchool"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">切换学校</span></a>
+                                <a style="line-height:35px" href="/App/Index" class="layui-this"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">应用维护</span></a>
+                                <a style="line-height:35px" href="/UnifiedPlatFormRole/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">角色维护</span></a>
+                                <a style="line-height:35px" href="/SuperUserSettings/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">用户维护</span></a>
+                                <a style="line-height:35px" href="/Dictionary/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">字典维护</span></a>
+                                <a style="line-height:35px" href="/Platform/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">APP版本维护</span></a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="toggleMenu">
+            <span class="close">
+                <i class="layui-icon layui-icon-left"></i>
+            </span>
+            <span class="open" style="display:none">
+                <i class="layui-icon layui-icon-right"></i>
+            </span>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div class="" id="div_SchoolList">
+                <div style=" padding-top:0px;">
+                    <div class="layui-row  layui-col-space15" style="margin-left: 5px;">
+                        <div class="layui-col-md3">
+                            <div class="layui-card">
+                                <div class="layui-card-header" style="position:relative;">
+                                    <span>应用分组</span>
+                                    <button class="layui-btn layui-btn-sm layui-btn-normal" id="addAppGroup" lay-submit="" lay-filter="addAppGroup" style="position:absolute;right:0px;">
+                                        <i class="layui-icon">&#xe654;</i> 新增分组
+                                    </button>
+                                </div>
+                                <div class="layui-card-body">
+                                    <ul class="fly-extend-doc-nav" id="ul_appgroup">
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="2" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 教务管理
+                                                </a>
+                                                    <span class="appgroup_mobile">app</span>
+                                                <a gupdate class="a-style" attr="2" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="2" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="3" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 学生管理
+                                                </a>
+                                                    <span class="appgroup_mobile">app</span>
+                                                <a gupdate class="a-style" attr="3" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="3" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="4" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 教师管理
+                                                </a>
+                                                    <span class="appgroup_mobile">app</span>
+                                                <a gupdate class="a-style" attr="4" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="4" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="5" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 校园办公管理
+                                                </a>
+                                                    <span class="appgroup_mobile">app</span>
+                                                <a gupdate class="a-style" attr="5" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="5" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="6" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 不显示
+                                                </a>
+                                                    <span class="appgroup_mobile">app</span>
+                                                <a gupdate class="a-style" attr="6" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="6" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="7" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 课程管理
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="7" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="7" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="8" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 教务管理
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="8" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="8" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="9" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 学生管理
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="9" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="9" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="10" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 数据中心
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="10" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="10" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="11" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 教师管理
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="11" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="11" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="12" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 财务管理
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="12" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="12" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="13" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 校园办公管理
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="13" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="13" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="14" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 其他
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="14" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="14" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                            <li class="li-bottom" lay-id="doc" style="position:relative;">
+                                                <a class="a-style" gsearch attr="15" style=" padding: 5px;">
+                                                    <i class="iconfont icon-wendang"></i> 不显示
+                                                </a>
+                                                    <span class="appgroup_pc">pc</span>
+                                                <a gupdate class="a-style" attr="15" style="position:absolute;right:40px;top:8px;">修改</a>
+                                                <a gdelete class="a-style" attr="15" style="position:absolute;right:0px;top:8px;">删除</a>
+                                            </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <div class="layui-card">
+                                <div class="layui-card-header" style="position:relative;">
+                                    <span>应用</span>
+                                    <button class="layui-btn layui-btn-sm layui-btn-normal" id="addApp" lay-submit="" lay-filter="addApp" style="position:absolute;right:0px;">
+                                        <i class="layui-icon">&#xe654;</i> 新增应用
+                                    </button>
+                                </div>
+                                <div class="layui-card-body" style=" max-height: 800px; overflow: hidden; overflow-y: auto;">
+                                    
+                                    <ul class="fly-extend-doc-nav"  id="ul_app">
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    <div class="layui-row">
+                                        <div class="layui-col-md2">菜单</div>
+                                        <div class="layui-col-md10" style="text-align:right;">
+                                            <button class="layui-btn layui-btn-sm layui-btn-normal" id="btnAddMenu">
+                                                <i class="layui-icon">&#xe654;</i> 新增
+                                            </button>
+                                            <input type="hidden" id="CurrentAppId" value="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="div_content" class="layui-card-body">
+                                    <table id="dyTable" lay-filter="dyTable" class="layui-table"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <script src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="/Plugin/layui/layui.js"></script>
+    <script src="/Scripts/layui.common-1.0.0.js"></script>
+    <script src="/Plugin/jquery.autocompleter/jquery.autocompleter.js"></script>
+    <script src="/Scripts/jquery.cookie.js"></script>
+    <script src="/Scripts/toggle.js"></script>
+    <script>
+
+        $(function () {
+                        //返回门户
+            $('#logo_Res').click(function () {
+                window.location.href = '/Login/BackToPortal';
+            })
+            $('#backToPortal').click(function () {
+                window.location.href = '/Login/BackToPortal';
+            })
+            $("#loginOut").click(function () {
+                window.location.href ='/Login/LoginOut';
+            });
+
+            var urlmap = [
+                {
+                    src: "/ExamPlan/Exam/Othre",
+                    dest: "/ExamPlan/Exam/Index"
+                },
+                {
+                    src: "/ExamPlan/Exam/ExamSetting",
+                    dest: "/ExamPlan/Exam/Index"
+                }
+            ];
+            var path = window.location.pathname;
+
+            $(urlmap).each(function () {
+                var src = this.src;
+                var dest = this.dest;
+                if (src == path) {
+                    path = dest;
+                }
+            });
+
+            var activeNav = null;
+            if (path == "/") {
+                activeNav = $(".layui-nav [default-page]");
+            } else {
+                var navList = $(".layui-nav a[href]");
+                $(navList).each(function () {
+                    var currNav = this;
+                    var url = $(currNav).attr("href");
+                    if (url.indexOf(path) >= 0) {
+                        activeNav = $(currNav);
+                    }
+                });
+            }
+            if (activeNav != null && activeNav != undefined) {
+                activeNav.addClass("layui-this");
+                var pNode = activeNav.parents(".layui-nav-item");
+                if (pNode != null && pNode != undefined) {
+                    pNode.addClass("layui-nav-itemed");
+                }
+            }
+            layui.config({
+                base: '/Plugin/TreeTable/js/'
+            });
+            //JavaScript代码区域
+            layui.use(['element', 'form', 'layer','treetable'], function () {
+                var element = layui.element;
+                var layer = layui.layer;
+                var treetable = layui.treetable;
+                //鼠标悬浮显示帮助说明
+                $('.icon_tip').mouseover(function () {
+                    var content = $(this).find('.tip_content').text()
+                    var index = layer.tips(content, '.icon_tip', {
+                        time:0
+                    });
+                    $(this).mouseout(function () {
+                        layer.close(index)
+                    })
+                })
+
+                //数据加载区域
+                $("#addApp").click(function() {
+                    layer.open({
+                        type: 2,
+                        title: "新增应用",
+                        content: "/App/AddApp",
+                        offset: 'auto',
+                        area: ["420px", "470px"],
+                        maxmin: true,
+                        end: function() {
+                            window.location.reload();
+                        }
+                    });
+                });
+
+                //分组操作部分开始
+                $("#addAppGroup").click(function() {
+                    layer.open({
+                        type: 2,
+                        title: "新增应用",
+                        content: "/App/AddAppGroup",
+                        offset: 'auto',
+                        area: ["420px", "470px"],
+                        maxmin: true,
+                        end: function() {
+                            window.location.reload();
+                        }
+                    });
+                });
+                $("li a[gdelete]").click(function() {
+                        var id = $(this).attr("attr");
+                        layer.confirm('确认删除该应用?',
+                            function(index) {
+                                var load = layer.msg("应用删除中...", { icon: 16, shade: 0.01, time: 0 });
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: "/App/DeleteAppGroup",
+                                    data: { id: id },
+                                    success: function(data) {
+                                        layer.close(index);
+                                        layer.close(load);
+                                        if (data.flag == 0) {
+                                            layer.msg(data.message, { icon: 7 });
+                                        } else {
+                                            layer.msg("删除成功",
+                                                { icon: 1, time: 1000 },
+                                                function() {
+                                                    window.location.reload();
+                                                });
+                                        }
+                                    },
+                                    error: function(msg) {
+                                        layer.msg("删除异常", { icon: 7 });
+                                    }
+                                });
+                            });
+                    });
+
+                $("li a[gupdate]").click(function() {
+                    var id = $(this).attr("attr");
+                    layer.open({
+                        type: 2,
+                        title: "修改应用",
+                        content: "/App/AddAppGroup?id=" + id,
+                        offset: 'auto',
+                        area: ["420px", "490px"],
+                        maxmin: true,
+                        end: function() {
+                            window.location.reload();
+                        }
+                    });
+                });
+
+                $("li a[gsearch]").click(function() {
+                    loadhtmlg(this);
+                });
+
+                window.loadhtmlg = function(obj) {
+                     //选中
+                    $("li a[gsearch]").each(function() {
+                        $(this).removeClass("activeLi");
+                    });
+
+                    $(obj).addClass("activeLi");
+
+                    var id = $(obj).attr("attr");
+                    //加载数据
+                    $.ajax({
+                        type: "GET",
+                        dataType: "html",
+                        url: "/App/QueryApp?AppGroupId=" + id,
+                        success: function (result) {
+                            $("#ul_app").empty();
+                            JSON.parse(result).forEach(item => {
+                                var dom = '<li class="li-bottom" lay-id="doc" style="position:relative;"><a class="a-style" search attr="' + item.AppId + '" style=" padding: 5px;"><i class="iconfont icon-wendang"></i>' + item.AppName + (item.AppTag == null || item.AppTag.length==0 ?'': '[' + item.AppTag + ']' )+ '</a>';
+                            if (item.IsMobile)
+                            {
+                                dom += '<span class="app_mobile">app</span>';
+                            }
+                            else
+                            {
+                                dom += '<span class="app_pc">pc</span>';
+                            }
+                                dom += ' <a update class="a-style" attr="'+item.AppId+'" style="position:absolute;right:40px;top:8px;">修改</a>';
+                                dom += '<a delete class="a-style" attr="'+item.AppId+'" style="position:absolute;right:0px;top:8px;">删除</a>';
+                                dom += '</li>'
+                                $("#ul_app").append(dom);
+                            });
+
+                $("li a[delete]").click(function() {
+                        var id = $(this).attr("attr");
+                        layer.confirm('确认删除该应用?',
+                            function(index) {
+                                var load = layer.msg("应用删除中...", { icon: 16, shade: 0.01, time: 0 });
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: "/App/DeleteApp",
+                                    data: { id: id },
+                                    success: function(data) {
+                                        layer.close(index);
+                                        layer.close(load);
+                                        if (data.flag == 0) {
+                                            layer.msg(data.message, { icon: 7 });
+                                        } else {
+                                            layer.msg("删除成功",
+                                                { icon: 1, time: 1000 },
+                                                function() {
+                                                    window.location.reload();
+                                                });
+                                        }
+                                    },
+                                    error: function(msg) {
+                                        layer.msg("删除异常", { icon: 7 });
+                                    }
+                                });
+                            });
+                    });
+
+                $("li a[update]").click(function() {
+                    var id = $(this).attr("attr");
+                    layer.open({
+                        type: 2,
+                        title: "修改应用",
+                        content: "/App/UpdateApp?id=" + id,
+                        offset: 'auto',
+                        area: ["420px", "490px"],
+                        maxmin: true,
+                        end: function() {
+                            window.location.reload();
+                        }
+                    });
+                });
+
+                $("li a[search]").click(function() {
+                    loadhtml(this);
+                });
+
+                        },
+                        error: function(msg) {
+                            //layer.msg("删除异常", { icon: 7 });
+                        }
+                    });
+                }
+
+                //分组操作部分结束
+
+                window.loadhtml = function(obj) {
+                     //选中
+                    $("li a[search]").each(function() {
+                        $(this).removeClass("activeLi");
+                    });
+
+                    $(obj).addClass("activeLi");
+
+                    var id = $(obj).attr("attr");
+                    $("#CurrentAppId").val(id);
+                        //加载数据
+                    $.ajax({
+                        type: "GET",
+                        dataType: "html",
+                        url: "/App/QueryMenuList?appId=" + id,
+                        success: function(result) {
+
+                            $("#div_content").html(result);
+                        },
+                        error: function(msg) {
+                            //layer.msg("删除异常", { icon: 7 });
+                        }
+                    });
+                }
+                $("#btnAddMenu").click(function() {
+                    var currId = $("#CurrentAppId").val();
+                    if (currId == "") {
+                        layer.msg("当前未选择应用,不能添加菜单", {icon:7});
+                        return false;
+                    }
+
+                     layer.open({
+                        type: 2,
+                        title: "新增菜单",
+                        content: "/App/AddMenu?appId=" + currId,
+                        offset: 'auto',
+                        area: ["440px", "550px"],
+                        maxmin: true,
+                        end: function () {
+                            var obj = $("a[attr='" + currId + "'][search]");
+                            loadhtml(obj);
+                        }
+                    });
+                });
+
+            });
+
+
+        });
+
+
+        function post(URL, AppId, WebApi, WebApiLogin, RevertAppId) {
+            //returnMain(URL, AppId, WebApiLogin, RevertAppId);
+            $.ajax({
+                headers: {
+                    "appid": AppId,
+                    "access_token": JSON.parse($.cookie('token')).access_token,
+                    "refresh_token": JSON.parse($.cookie('token')).refresh_token,
+                    "targetId": RevertAppId
+                },
+                type: "post",
+                async: false,
+                url: WebApi + "/account/SwitchApp",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.HasError) {
+                        $.ajax({
+                            headers: { "refresh_token": refresh_token, "AppId": appId },
+                            type: "post",
+                            url: WebApi + "/account/RefreshAccessToken",
+                            data: null,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.HasError) {
+                                    alert(data.Message);
+                                    window.location.href = WebApiLogin;
+                                } else {
+                                    var token = { access_token: data.Data.access_token, refresh_token: data.Data.refresh_token }
+                                    $.cookie('token', JSON.stringify(token));
+                                }
+                            }
+                        });
+                    } else {
+                        res_access_token = data.Data.access_token;
+                        res_refresh_token = data.Data.refresh_token;
+
+                        var temp = document.createElement("form");
+                        temp.action = URL;
+                        temp.method = "post";
+                        temp.style.display = "none";
+                        var access_token = document.createElement("textarea");
+                        var refresh_token = document.createElement("textarea");
+                        var appList = document.createElement("textarea");
+                        var user = document.createElement("textarea");
+                        access_token.name = "access_token";
+                        access_token.value = res_access_token;
+                        refresh_token.name = "refresh_token";
+                        refresh_token.value = res_refresh_token;
+                        appList.name = "appList";
+                        appList.value = "";
+                        user.name = "user";
+                        user.value = "";
+
+                        temp.appendChild(access_token);
+                        temp.appendChild(refresh_token);
+                        temp.appendChild(appList);
+                        temp.appendChild(user);
+                        document.body.appendChild(temp);
+                        temp.submit(); return temp;
+                    }
+                }
+            })
+        }
+
+
+    </script>
+</body>
+</html>

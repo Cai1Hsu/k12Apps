@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>数字校园</title>
+    <link rel="shortcut icon" href="https://static.k12top.com/Common/yunmalogo_new.png" />
+
+    <link href="/Plugin/layui/css/layui.css" rel="stylesheet" />
+    <link href="/Css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="/Css/globalstyle.css" rel="stylesheet" />
+    <link href="/Css/style.css" rel="stylesheet" />
+    <link href="/Css/toggle.css" rel="stylesheet" />
+    <style>
+        .hide {
+            display: none
+        }
+
+        .nav-text {
+            margin-left: 10px;
+        }
+
+        .layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+            background-color: #15A0ED !important
+        }
+
+        .layui-nav-tree .layui-nav-item a {
+            line-height: 35px;
+        }
+
+        .layui-nav-tree .layui-nav-child a {
+            line-height: 40px;
+        }
+
+        .schoolList {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap
+        }
+
+        .school-item {
+            width: 220px;
+            height: 110px;
+            margin: 10px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 2px;
+            border: 2px solid #fff;
+            cursor: pointer
+        }
+
+        .selected {
+            border: 2px solid #4bb2ff;
+        }
+
+        .school-item .top {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .schoolImg {
+            height: 30px;
+            width: 30px;
+            min-width: 30px;
+            margin-right: 10px;
+            border-radius: 15px;
+            overflow: hidden
+        }
+
+            .schoolImg img {
+                height: 100%;
+                width: 100%;
+            }
+
+        .schoolName {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .schoolDesc {
+            font-size: 12px;
+            max-height: 70px;
+            font-weight: 300;
+            overflow: hidden;
+            word-break: break-all;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        .a-style {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .activeLi {
+            border: 1px solid #3399cc;
+            padding: 5px;
+            background-color: #3399ff;
+            color: #fff;
+        }
+
+        .up-head {
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            -moz-box-shadow: 0 2px 5px -1px #ddd;
+            box-shadow: 0 2px 5px -1px #ddd;
+        }
+
+            .up-head .up-head-left {
+                margin-left: 30px;
+            }
+
+                .up-head .up-head-left li {
+                    list-style: none;
+                    float: left;
+                }
+
+            .up-head ul {
+                margin: 0;
+                padding: 0;
+            }
+
+                .up-head ul li {
+                    height: 60px;
+                    line-height: 60px;
+                }
+
+            .up-head .logo-img {
+                height: 45px;
+                width: 158px;
+                margin-top: -7px;
+                cursor: pointer;
+            }
+
+        .up-head-right li {
+            font-size: 12px;
+            float: right;
+            list-style: none;
+            margin-right: 30px;
+            cursor: pointer;
+        }
+
+        .right-out {
+            position: absolute;
+            top: 62px;
+            right: 8px;
+            background: #ffffff;
+            -moz-box-shadow: -2px 0px 5px 0px #ddd;
+            box-shadow: -2px 0px 5px 0px #ddd;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            width: 80px;
+        }
+
+            .right-out div {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                display: none;
+            }
+
+                .right-out div:hover {
+                    background: #4bb2ff;
+                    cursor: pointer;
+                    color: #fff;
+                }
+
+        .right-out-icon:hover .right-out div {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            display: block;
+        }
+
+        #logo_Res {
+            color: #c13643;
+        }
+
+        .up-head-img {
+            height: 30px;
+            width: 30px;
+            margin-top: -1px;
+        }
+
+        .layui-layout-admin .layui-logo {
+            color: #14a0ec !important;
+            line-height: 60px !important;
+            font-weight: 800 !important;
+            left: 10px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body" style="background:#f2f2f2;">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header up-head">
+            <ul class="up-head-left">
+                <li>
+                    <a id="logo_Res" style="cursor: pointer">
+                        <div class="layui-logo" style="background:url('https://static.k12top.com/Common/yunmalogo_new.png') no-repeat 8px center / 42px 45px">
+                            <label style="cursor:pointer;color:#14a0ec">数字校园</label>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="up-head-right">
+                <li class="right-out-icon">
+                    云码棠湖
+                    <div class="right-out">
+                        <div id="updatePassWord">修改密码</div>
+                        <div id="backToPortal">返回门户</div>
+                        <div id="loginOut">退出</div>
+                    </div>
+                </li>
+                <li style="margin-right: 10px">
+                    <img class="up-head-img" src="https://static.k12top.com/Common/defaultspecialist.png">
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <div id="flowName" style="height:42px;width:200px;color:#ffffff;background-color:#15A0ED;display:none;font-size:12px;text-align:center;line-height:16px;padding-top:12px;">
+                    <div class="grade"></div>
+                    <div class="semester"></div>
+                </div>
+                <ul class="layui-nav layui-nav-tree" lay-filter="test" style="text-align:left !important">
+                    <li class="layui-nav-item">
+                                <a style="line-height:35px" href="/OrganiseUnit/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">机构维护</span></a>
+                                <a style="line-height:35px" href="/Modular/Index" class="layui-this"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">模块维护</span></a>
+                                <a style="line-height:35px" href="/BasicData/School/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">学校维护</span></a>
+                                <a style="line-height:35px" href="/Login/CheckSchool"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">切换学校</span></a>
+                                <a style="line-height:35px" href="/App/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">应用维护</span></a>
+                                <a style="line-height:35px" href="/UnifiedPlatFormRole/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">角色维护</span></a>
+                                <a style="line-height:35px" href="/SuperUserSettings/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">用户维护</span></a>
+                                <a style="line-height:35px" href="/Dictionary/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">字典维护</span></a>
+                                <a style="line-height:35px" href="/Platform/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">APP版本维护</span></a>
+
+                    </li>
+                    </ul>
+            </div>
+        </div>
+
+        <div class="toggleMenu">
+            <span class="close">
+                <i class="layui-icon layui-icon-left"></i>
+            </span>
+            <span class="open" style="display:none">
+                <i class="layui-icon layui-icon-right"></i>
+            </span>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding:0 10px; min-width:800px;">
+                <div class="layui-form" id="SchoolIndexContent">
+                    <div class="content-area" style="padding:0 10px 0 10px; background-color: #fff; ">
+                        <div class="btn-area" style="height: 44px; line-height: 40px;">
+
+                            <button id="btnAdd" style="float:left;margin-left:5px !important;" class="layui-btn layui-btn-sm layui-btn-normal">新增</button>
+                            <button id="btnSeacrh" style="float:right;margin-left:5px !important; " class="layui-btn layui-btn-sm layui-btn-normal">查询</button>
+                            <input style="float:right;margin-left:5px !important; width: 200px; margin-top: 3px;" placeholder="请输入模块名查询" type="text" class="layui-input" id="Keyword" />
+                        </div>
+                    </div>
+                </div>
+                <table class="layui-table layui-form" id="modularTable" lay-filter="modularTable"></table>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/html" id="barOp">
+        <a class="layui-btn  layui-btn-xs layui-btn-normal" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <script src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="/Plugin/layui/layui.js"></script>
+    <script src="/Scripts/cityJson.js"></script>
+    <script src="/Scripts/cookie.js"></script>
+    <script src="/Scripts/toggle.js"></script>
+    <script type="text/javascript">
+        layui.config({
+            base: '/Scripts/',
+        });
+    //JavaScript代码区域
+        layui.use(['element', 'form', 'layer', 'table'],
+            function() {
+                var element = layui.element;
+                var layer = layui.layer;
+
+                var form = layui.form;
+                var table = layui.table;
+                var $ = layui.$;
+                //同步加载
+
+                var method = {
+                    query: function () { ;
+                        table.render({
+                            elem: '#modularTable',
+                            where: { Keyword: $("#Keyword").val()} ,
+                            url: '/Modular/Query',
+                            cols: [
+                                [
+                                    { field: 'Name', title: '模块名称', width: 150 },
+                                    { field: 'ContentUrl', title: '内容地址', width: 150 },
+                                    { field: 'PerceHeight', title: '百分比高', width: 150 },
+                                    { field: 'PerceWidth', title: '百分比宽', width: 150 },
+                                    { field: 'IsLocked', width: 100, title: "是否启用", align: "center", templet: function (d) { if (d.Enable) { return "启用"; } else { return "禁用"; } } },
+                                    { title: '操作', toolbar: '#barOp' }
+                                ]
+                            ],
+                            text: {
+                                none: '暂无相关数据'
+                            }
+                        });
+                    }
+                }
+                method.query();
+
+                table.on("tool(modularTable)", function (obj) {
+                    if (obj.event === 'del') {
+                        layer.confirm('删除当前模块,用户将失去模块的控制，是否确定继续？', {icon: 3, title: '提示'},function(index) {
+                            var load = layer.msg("数据删除中，请耐心等待...", { icon: 16, shade: 0.01, time: 0 });;
+                            $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                url: "/Modular/Delete",
+                                data: { id: obj.data.Id },
+                                success: function (data) {
+                                    layer.close(index);
+                                    layer.close(load);
+                                    if (data.flag == 0) {
+                                        layer.msg(data.message, { icon: 7 });
+                                    } else {
+                                        layer.msg("删除成功", { icon: 1, time: 1000 }, function () {
+                                            window.location.reload();
+                                        });
+                                    }
+                                },
+                                error: function (msg) {
+                                    layer.close(index);
+                                    layer.close(load);
+                                    layer.msg("删除异常", { icon: 7 });
+                                }
+                            });
+                        })
+                    }
+                    else if (obj.event === 'edit')
+                    {
+                        layer.open({
+                            title:"修改模块",
+                            type: 2,
+                            area: ['370px', '430px'],
+                            fixed: false, //不固定
+                            maxmin: true,
+                            content: "/Modular/Update?id="+obj.data.Id,
+                            end: function() {
+                                method.query();
+                            }
+                        });
+                    }
+                })
+
+                //返回门户
+                $('#logo_Res').click(function () {
+                    window.location.href = '/Login/BackToPortal';
+                })
+                $('#backToPortal').click(function () {
+                    window.location.href = '/Login/BackToPortal';
+                })
+                //退出
+                $("#loginOut").click(function() {
+                    window.location.href = '/Login/LoginOut';
+                });
+                //鼠标悬浮显示帮助说明
+                $('.icon_tip').mouseover(function() {
+                    var content = $(this).find('.tip_content').text()
+                    var index = layer.tips(content,
+                        '.icon_tip',
+                        {
+                            time: 0
+                        });
+                    $(this).mouseout(function() {
+                        layer.close(index)
+                    })
+                })
+                //数据加载区域
+
+                $("#btnAdd").click(function() {
+                    layer.open({
+                        title:"新增模块",
+                        type: 2,
+                        area: ['370px', '430px'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: "/Modular/Add",
+                        end: function() {
+                            method.query();
+                        }
+                    });
+                })
+
+                $("#btnSeacrh").click(function() {
+                    method.query();
+                })
+
+            });
+
+    </script>
+</body>
+</html>

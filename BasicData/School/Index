@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>数字校园</title>
+    <link rel="shortcut icon" href="https://static.k12top.com/Common/yunmalogo_new.png" />
+
+    <link href="/Plugin/layui/css/layui.css" rel="stylesheet" />
+    <link href="/Css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="/Css/globalstyle.css" rel="stylesheet" />
+    <link href="/Css/style.css" rel="stylesheet" />
+    <link href="/Css/toggle.css" rel="stylesheet" />
+
+
+    <link href="/Plugin/jquery.autocompleter/jquery.autocomplete.css" rel="stylesheet" />
+    <style>
+        .nav-text {
+            margin-left: 10px;
+        }
+
+        .layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+            background-color: #15A0ED !important
+        }
+
+        .layui-nav-tree .layui-nav-item a {
+            line-height: 35px;
+        }
+
+        .layui-nav-tree .layui-nav-child a {
+            line-height: 40px;
+        }
+
+        .schoolList {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap
+        }
+
+        .school-item {
+            width: 220px;
+            height: 110px;
+            margin: 10px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 2px;
+            border: 2px solid #fff;
+            cursor: pointer
+        }
+
+        .selected {
+            border: 2px solid #4bb2ff;
+        }
+
+        .school-item .top {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .schoolImg {
+            height: 30px;
+            width: 30px;
+            min-width: 30px;
+            margin-right: 10px;
+            border-radius: 15px;
+            overflow: hidden
+        }
+
+            .schoolImg img {
+                height: 100%;
+                width: 100%;
+            }
+
+        .schoolName {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .schoolDesc {
+            font-size: 12px;
+            max-height: 70px;
+            font-weight: 300;
+            overflow: hidden;
+            word-break: break-all;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        .up-head {
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            -moz-box-shadow: 0 2px 5px -1px #ddd;
+            box-shadow: 0 2px 5px -1px #ddd;
+        }
+
+            .up-head .up-head-left {
+                margin-left: 30px;
+            }
+
+                .up-head .up-head-left li {
+                    list-style: none;
+                    float: left;
+                }
+
+            .up-head ul {
+                margin: 0;
+                padding: 0;
+            }
+
+                .up-head ul li {
+                    height: 60px;
+                    line-height: 60px;
+                }
+
+            .up-head .logo-img {
+                height: 45px;
+                width: 158px;
+                margin-top: -7px;
+                cursor: pointer;
+            }
+
+        .up-head-right li {
+            font-size: 12px;
+            float: right;
+            list-style: none;
+            margin-right: 30px;
+            cursor: pointer;
+        }
+
+        .right-out {
+            position: absolute;
+            top: 62px;
+            right: 8px;
+            background: #ffffff;
+            -moz-box-shadow: -2px 0px 5px 0px #ddd;
+            box-shadow: -2px 0px 5px 0px #ddd;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            width: 80px;
+        }
+
+            .right-out div {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                display: none;
+            }
+
+                .right-out div:hover {
+                    background: #4bb2ff;
+                    cursor: pointer;
+                    color: #fff;
+                }
+
+        .right-out-icon:hover .right-out div {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            display: block;
+        }
+
+        #logo_Res {
+            color: #c13643;
+        }
+
+        .up-head-img {
+            height: 30px;
+            width: 30px;
+            margin-top: -1px;
+        }
+
+        .layui-layout-admin .layui-logo {
+            color: #14a0ec !important;
+            line-height: 60px !important;
+            font-weight: 800 !important;
+            left: 10px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body" style="background:#f2f2f2;">
+    <div class="layui-layout layui-layout-admin">
+
+        <div class="layui-header up-head">
+            <ul class="up-head-left">
+                <li>
+                    <a id="logo_Res" style="cursor: pointer">
+                        <div class="layui-logo" style="background:url('https://static.k12top.com/Common/yunmalogo_new.png') no-repeat 8px center / 42px 45px">
+                            <label style="cursor:pointer;color:#14a0ec">数字校园</label>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="up-head-right">
+                <li class="right-out-icon">
+                    云码棠湖
+                    <div class="right-out">
+                        <div id="updatePassWord">修改密码</div>
+                        <div id="backToPortal">返回门户</div>
+                        <div id="loginOut">退出</div>
+                    </div>
+                </li>
+                <li style="margin-right: 10px">
+                    <img class="up-head-img" src="https://static.k12top.com/Common/defaultspecialist.png">
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <div id="flowName" style="height:42px;width:200px;color:#ffffff;background-color:#15A0ED;display:none;font-size:12px;text-align:center;line-height:16px;padding-top:12px;">
+                    <div class="grade"></div>
+                    <div class="semester"></div>
+                </div>
+                <ul class="layui-nav layui-nav-tree" lay-filter="test" style="text-align:left !important">
+                    <li class="layui-nav-item">
+                                <a style="line-height:35px" href="/OrganiseUnit/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">机构维护</span></a>
+                                <a style="line-height:35px" href="/Modular/Index"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">模块维护</span></a>
+                                <a style="line-height:35px" href="/BasicData/School/Index" class="layui-this"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">学校维护</span></a>
+                                <a style="line-height:35px" href="/Login/CheckSchool"><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">切换学校</span></a>
+                                <a style="line-height:35px" href="/App/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">应用维护</span></a>
+                                <a style="line-height:35px" href="/UnifiedPlatFormRole/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">角色维护</span></a>
+                                <a style="line-height:35px" href="/SuperUserSettings/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">用户维护</span></a>
+                                <a style="line-height:35px" href="/Dictionary/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">字典维护</span></a>
+                                <a style="line-height:35px" href="/Platform/Index" class=""><i style="height:14px" class="icon iconfont">&#xe64e;</i><span class="nav-text">APP版本维护</span></a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="toggleMenu">
+            <span class="close">
+                <i class="layui-icon layui-icon-left"></i>
+            </span>
+            <span class="open" style="display:none">
+                <i class="layui-icon layui-icon-right"></i>
+            </span>
+        </div>
+
+        <div class="layui-body">
+
+            <div style="padding: 0 10px;min-width:800px;">
+                <div class="layui-form" id="SchoolIndexContent">
+                    <div class="content-area" style="padding:0 10px 0 10px">
+                        <div class="btn-area">
+                            <button id="btnSeacrh" data-param="Keyword" data-search data-table="tableSchool" style="float:right;margin-left:5px !important;" class="layui-btn layui-btn-sm layui-btn-normal">查询</button>
+                            <input class="layui-input" name="Keyword" lay-verify="required" id="Keyword" style="height: 30px;width:200px;float:right;margin-top:5px;" autocomplete="off" placeholder="请输入学校名称查询">
+
+                            <button class="layui-btn layui-btn-sm layui-btn-normal" data-table="tableSchool" data-title="新增" data-offset="auto" data-area="640px,540px" data-modal data-url="/BasicData/School/Add">
+                                新增
+                            </button>
+
+                            <button class="layui-btn layui-btn-sm layui-btn-normal" data-table="tableSchool" data-param="ID" data-edit data-title="修改" data-offset="auto" data-area="690px,540px" data-modal data-url="/BasicData/School/Edit">
+                                修改
+                            </button>
+
+                            <button class="layui-btn layui-btn-sm layui-btn-danger" data-loading="数据删除中，请耐心等待..." data-icon="3" data-title="提示" data-method="post" data-param="ID" data-url="/BasicData/School/LogicDeleteByIds" data-msg="是否确定删除？" data-error="请选择需要删除的数据" data-confirm data-table="tableSchool">
+                                删除
+                            </button>
+                                <button class="layui-btn layui-btn-sm layui-btn-danger" id="syncData4Cloud">
+                                    数据同步
+                                </button>
+                        </div>
+                    </div>
+                    <table class="layui-table" lay-data="{url:'/BasicData/School/QueryTableListModelPager/',skin:'nob',page:true,request:{pageName: 'PageIndex', limitName:'PageSize'},id:'tableSchool'}" lay-filter="demo">
+                        <thead>
+                            <tr>
+
+                                <th lay-data="{type:'checkbox', field:'ID', fixed: 'left'}"></th>
+                                <th lay-data="{field:'SerialNo'}">学校编号</th>
+                                <th lay-data="{field:'Name'}">学校名称</th>
+                                <th lay-data="{field:'Code'}">学校代码</th>
+                                <th lay-data="{field:'DbServerName'}">服务器</th>
+                                <th lay-data="{field:'SchoolTypeName'}">学校类型</th>
+                                <th lay-data="{field:'ScheduleVersionName'}">排课版本</th>
+                                <th lay-data="{field:'ProvinceCN'}">省</th>
+                                <th lay-data="{field:'CityCN'}">市</th>
+                                <th lay-data="{field:'CountyCN'}">区</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="/Plugin/layui/layui.js"></script>
+    <script src="/Scripts/layui.common-1.0.0.js"></script>
+    <script src="/Plugin/jquery.autocompleter/jquery.autocompleter.js"></script>
+    <script src="/Scripts/jquery.cookie.js"></script>
+    <script src="/Scripts/toggle.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //返回门户
+            $('#logo_Res').click(function () {
+                window.location.href = '/Login/BackToPortal';
+            })
+            $('#backToPortal').click(function () {
+                window.location.href = '/Login/BackToPortal';
+            })
+            $("#loginOut").click(function () {
+                window.location.href ='/Login/LoginOut';
+            });
+            common.Init("SchoolIndexContent");
+            //同步数据
+            $('#syncData4Cloud').click(function (e) {
+                layui.use(['layer'], function () {
+                    var layer = layui.layer;
+                    layer.confirm('将要开始数据同步,是否确定？', { icon: 3, title: '提示' }, function (index) {
+                        var aindex = layer.msg('数据同步中,请稍后。。。', {
+                            icon: 16
+                            , shade: 0.01,
+                            time:0
+                        });
+                        $.getJSON('/BasicData/School/SyncData4SchoolFromYueQing', {}, function (response) {
+                            layer.close(aindex);
+                            if (response.HasError) {
+                                layer.alert(response.Message, { icon: 2 });
+                            } else {
+                                layer.msg('同步成功', {
+                                    icon: 1
+                                }, function () {
+                                    window.location.reload();
+                                });
+                            }
+                        })
+                        layer.close(index);
+                    });
+                })
+            })
+        });
+
+        function post(URL, AppId, WebApi, WebApiLogin, RevertAppId) {
+            //returnMain(URL, AppId, WebApiLogin, RevertAppId);
+            $.ajax({
+                headers: {
+                    "appid": AppId,
+                    "access_token": JSON.parse($.cookie('token')).access_token,
+                    "refresh_token": JSON.parse($.cookie('token')).refresh_token,
+                    "targetId": RevertAppId
+                },
+                type: "post",
+                async: false,
+                url: WebApi + "/account/SwitchApp",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.HasError) {
+                        $.ajax({
+                            headers: { "refresh_token": refresh_token, "AppId": appId },
+                            type: "post",
+                            url: WebApi + "/account/RefreshAccessToken",
+                            data: null,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.HasError) {
+                                    alert(data.Message);
+                                    window.location.href = WebApiLogin;
+                                } else {
+                                    var token = { access_token: data.Data.access_token, refresh_token: data.Data.refresh_token }
+                                    $.cookie('token', JSON.stringify(token));
+                                }
+                            }
+                        });
+                    } else {
+                        res_access_token = data.Data.access_token;
+                        res_refresh_token = data.Data.refresh_token;
+
+                        var temp = document.createElement("form");
+                        temp.action = URL;
+                        temp.method = "post";
+                        temp.style.display = "none";
+                        var access_token = document.createElement("textarea");
+                        var refresh_token = document.createElement("textarea");
+                        var appList = document.createElement("textarea");
+                        var user = document.createElement("textarea");
+                        access_token.name = "access_token";
+                        access_token.value = res_access_token;
+                        refresh_token.name = "refresh_token";
+                        refresh_token.value = res_refresh_token;
+                        appList.name = "appList";
+                        appList.value = "";
+                        user.name = "user";
+                        user.value = "";
+
+                        temp.appendChild(access_token);
+                        temp.appendChild(refresh_token);
+                        temp.appendChild(appList);
+                        temp.appendChild(user);
+                        document.body.appendChild(temp);
+                        temp.submit(); return temp;
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>
